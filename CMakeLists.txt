@@ -26,4 +26,6 @@ add_executable(memory_management
         include/process.h
         )
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 add_subdirectory(test)

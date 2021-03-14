@@ -3,6 +3,7 @@
 //
 
 #include "../include/storage.h"
+#include <stdexcept>
 
 storage::storage() {
     this->table.insert(pair<int, item>(0,{2,true}));
@@ -40,7 +41,7 @@ storage::~storage() {
 void storage::free(process &process) {
     for (auto const& [key, val] : this->table)
     {
-        if(val.isFree && val.capacity >= process.size) {
+        if(!val.isFree && val.process.name == process.name) {
             this->table.at(key) = {val.capacity, true , {}};
             break;
         }
@@ -52,7 +53,7 @@ process &storage::getProcess(const string& name) {
     {
         if(!val.isFree && val.process.name == name) {
             return this->table.at(key).process;
-
         }
     }
+    throw invalid_argument("No such process");
 }

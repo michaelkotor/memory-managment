@@ -4,6 +4,10 @@
 
 using namespace std;
 
+int real(int a) {
+    return a + 2;
+}
+
 int main() {
     storage storage;
 
@@ -12,3 +16,4 @@ int main() {
     cout << storage.allocate(first) << endl;
     return 0;
 }
+
