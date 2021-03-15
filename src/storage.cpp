@@ -22,6 +22,9 @@ int storage::allocate(const process& process) {
 
     //by default the index is not found
     int index = -1;
+    if(process.size <= 0 || process.name.empty()) {
+        return index;
+    }
 
     for (auto const& [key, val] : this->table)
     {
@@ -39,6 +42,9 @@ storage::~storage() {
 }
 
 void storage::free(process &process) {
+    if(process.name.empty()) {
+        return;
+    }
     for (auto const& [key, val] : this->table)
     {
         if(!val.isFree && val.process.name == process.name) {
@@ -49,6 +55,9 @@ void storage::free(process &process) {
 }
 
 process &storage::getProcess(const string& name) {
+    if(name.empty()) {
+        throw invalid_argument("Name cannot be empty");
+    }
     for (auto const& [key, val] : this->table)
     {
         if(!val.isFree && val.process.name == name) {

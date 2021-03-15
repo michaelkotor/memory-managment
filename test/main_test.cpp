@@ -90,6 +90,20 @@ TEST(storage_check_content, check_volume_8)
     EXPECT_EQ(process.size, storage.getProcess("Name").size);
 }
 
+TEST(storage_check_content, check_volume_0)
+{
+    process process{"Name", 0};
+    storage storage;
+    EXPECT_EQ(-1, storage.allocate(process));
+}
+
+TEST(storage_check_content, check_volume_negative)
+{
+    process process{"Name", -45};
+    storage storage;
+    EXPECT_EQ(-1, storage.allocate(process));
+}
+
 TEST(storage_check_content, check_free)
 {
     process process{"Name", 128};
@@ -158,7 +172,20 @@ TEST(storage_check_content, check_multiple_3)
     EXPECT_EQ(process_3.size, storage.getProcess("Name3").size);
 }
 
+TEST(storage_check_content, check_empty_name_1)
+{
+    storage storage;
+    try {
+        storage.getProcess("");
+        FAIL() << "Expected std::invalid_argument";
+    } catch (std::invalid_argument const & err) {
+        EXPECT_EQ(err.what(), std::string("Name cannot be empty"));
+    }
+}
 
-
-
-
+TEST(storage_check_content, check_empty_name_2)
+{
+    process first{"", 200};
+    storage storage;
+    EXPECT_EQ(-1, storage.allocate(first));
+}
